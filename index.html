@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AR // Hand Tracking Engine</title>
+    
+    <!-- MediaPipe Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts for futuristic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Canvas for Matrix Rain / Base Effects -->
+    <canvas id="backgroundCanvas" class="fullscreen-canvas"></canvas>
+    
+    <!-- Video element (hidden, used for mediapipe input) -->
+    <video id="inputVideo" autoplay playsinline style="display: none;"></video>
+    
+    <!-- Main AR Canvas for Effects Rendering -->
+    <canvas id="outputCanvas" class="fullscreen-canvas"></canvas>
+    
+    <!-- Post-processing Canvas for Motion Blur/Glow -->
+    <canvas id="fxCanvas" class="fullscreen-canvas pointer-events-none"></canvas>
+
+    <!-- UI Overlay (HUD) -->
+    <div id="hud" class="hud-container pointer-events-none">
+        <header class="hud-header">
+            <h1 class="glitch" data-text="NEXUS AR">NEXUS AR</h1>
+            <div class="status-indicator">
+                <span class="pulse-dot"></span>
+                <span id="systemStatus">SYSTEM INITIALIZING...</span>
+            </div>
+        </header>
+        
+        <div class="hud-panels">
+            <div class="glass-panel metrics-panel">
+                <div class="metric">
+                    <span class="metric-label">FPS</span>
+                    <span class="metric-value" id="fpsCounter">00</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">ENTITIES</span>
+                    <span class="metric-value" id="handCounter">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">SIGNATURE</span>
+                    <span class="metric-value highlight" id="gestureDetect">NONE</span>
+                </div>
+            </div>
+            
+            <div class="glass-panel controls-panel pointer-events-auto">
+                <h3>ENVIRONMENT PROTOCOL</h3>
+                <div class="theme-selector" id="themeSelector">
+                    <button class="theme-btn active" data-theme="cyberpunk">CYBERPUNK</button>
+                    <button class="theme-btn" data-theme="sorcerer">SORCERER</button>
+                    <button class="theme-btn" data-theme="rainbow">PRISMATIC</button>
+                    <button class="theme-btn" data-theme="galaxy">NEBULA</button>
+                    <button class="theme-btn" data-theme="lava">VOLCANIC</button>
+                    <button class="theme-btn" data-theme="ocean">ABYSS</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="crosshair center-crosshair"></div>
+    </div>
+
+    <!-- Start Overlay to initialize Audio Context properly -->
+    <div id="startOverlay" class="overlay-screen">
+        <div class="overlay-content">
+            <h2>NEXUS AR ENGINE</h2>
+            <p>WARNING: High-intensity visual and audio simulation.</p>
+            <p>Requires Webcam Access & Audio Permissions.</p>
+            <button id="startBtn" class="cyber-btn">INITIALIZE SEQUENCE</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
